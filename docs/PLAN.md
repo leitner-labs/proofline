@@ -1,0 +1,48 @@
+# Open Agent Hackathon 2026 — Build Plan (Leitner Labs)
+Single-runtime execution of the 14-lane pyramid (director + 3 managers + 10 builders).
+Lane 0 = this agent. Workstreams keep the charter lane names; status tracked here.
+
+## Confirmed facts
+- Build: Oct 22 00:00 UTC (Wed 5 PM PDT) → submissions close Oct 27 23:45 UTC (Tue 4:45 PM PDT). Submit hours early (ties → earlier submission).
+- Track 02 "The Agent That Can Explain Why": investigate complex questions across multiple data sources, connect findings, produce evidence-backed answers.
+- Rubric: Impact 30 / Technical 20 / Innovation 15 / Demo video 15 / Product & UX 10 / Sponsor tech 10.
+- Hard reqs: built with Cursor; genuine Zetaris AND Meterless integration, shown in repo + video + deck + README.
+- Deliverables: public GitHub repo + 1-4 min demo video + slide deck + sponsor-tech writeup, via HackOS Submissions page.
+- Free tools only. No spending. Never state his exact age. He does zero labor.
+- Registered 5,242 competitors. 16+ eligibility (fine).
+
+## PRODUCT (Lane 1 spec, Director-ratified)
+**Proofline** — an agent that answers complex, high-stakes questions with a fully verifiable evidence trail.
+- Decompose question → sub-questions (Meterless local models via Nightshift = unmetered brain).
+- Federated source access via Zetaris (SQL across DBs/files/APIs) + web; Zetaris lineage = citation provenance.
+- Findings persist in Meterless H-MEM hierarchical memory with provenance.
+- Relay-style verification loop: each claim re-checked against source before synthesis.
+- Output: ranked cited answer, conflicts surfaced, interactive evidence explorer, audit log (run.json).
+- Demo scenario: "Should a small coffee roaster switch oat-milk suppliers?" — federates inventory SQLite + cost CSVs + web prices/reviews → cited recommendation. Shows multi-source federation better than web-only.
+
+## ROSTER (who owns what)
+- Lane 0 Director (this runtime): decisions, scope, final sign-off, parent reports.
+- M1 Product (this runtime): lanes 1-4.
+  - L1 product spec + rubric mapping (DONE 4:45 PM)
+  - L2 infra: GitHub acct leitner-labs, private repo, Cursor setup, PLAN.md
+  - L3 research: Zetaris + Meterless docs, HackOS Rules/Requirements folder, sponsor setup guide
+  - L4 data: demo datasets (inventory.db, costs.csv, supplier web sources)
+- M2 Build (this runtime): lanes 5-8.
+  - L5 agent core: decompose → investigate → verify → synthesize loop
+  - L6 sponsor integration: Zetaris federation + lineage capture; Meterless H-MEM memory + Nightshift runs
+  - L7 CLI/runner + run.json audit log
+  - L8 demo investigation executed for real, verified outputs
+- M3 Submission (this runtime): lanes 9-11.
+  - L9 README + sponsor-tech writeup
+  - L10 slide deck
+  - L11 demo video (1-4 min) — candidate for helper agent Oct 23-24
+  - (+ frontend explorer = candidate helper agent)
+
+## RISKS
+1. Zetaris runtime: sandbox has no Docker + 2GB RAM (local install needs 8GB). Mitigation: Zetaris-hosted "mini template" option (banner says available without AWS) — verify on Clusters page; fallback: Zetaris SQL API/driver against hosted instance.
+2. Cursor: need free Hobby account (marketing email, magic code) + cursor-agent CLI in sandbox for "built with Cursor" evidence.
+3. GitHub: no existing account → create free leitner-labs account with marketing email (required for the mandated public repo).
+4. Single-runtime throughput: sequence lanes on dependency map; async fan-out where possible.
+
+## LOG
+- 4:45 PM: warmup done (team confirmed, resources reviewed, Zetaris login verified+saved). PLAN ratified. Build opens in 15 min.

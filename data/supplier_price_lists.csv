@@ -1,0 +1,5 @@
+supplier,product,unit_price_usd,moq_liters,lead_time_days,contract_discount_pct,updated
+Oatly West (distributor),barista oat milk 12x1L,3.42,400,7,0,2026-10-01
+Pacific Oat Co.,barista oat milk 12x1L,2.98,600,5,4,2026-10-12
+Nordic Grain Foods,barista oat milk 12x1L,3.05,500,6,2,2026-10-10
+Golden State Oats,barista oat milk 12x1L,2.87,800,4,6,2026-10-15
