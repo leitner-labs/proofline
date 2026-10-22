@@ -12,15 +12,21 @@ const WEB = path.join(import.meta.dirname, '..', 'web');
 createServer(async (req, res) => {
   const u = new URL(req.url ?? '/', 'http://x');
   if (u.pathname === '/api/answer') {
-    const q = u.searchParams.get('q') ?? '';
-    const ans = await agent.answer(q);
-    res.writeHead(200, { 'content-type': 'application/json' });
-    res.end(JSON.stringify(ans));
+    try {
+      const q = u.searchParams.get('q') ?? '';
+      const ans = await agent.answer(q);
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify(ans));
+    } catch (err) {
+      res.writeHead(500, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: String(err) }));
+    }
     return;
   }
   const file = u.pathname === '/' ? 'index.html' : u.pathname.slice(1);
   try {
-    res.writeHead(200, { 'content-type': 'text/html' });
-    res.end(readFileSync(path.join(WEB, file)));
+    const body = readFileSync(path.join(WEB, file));
+    res.writeHead(200, { 'content-type': file.endsWith('.html') ? 'text/html' : 'application/octet-stream' });
+    res.end(body);
   } catch { res.writeHead(404); res.end('not found'); }
 }).listen(4173, () => console.log('proofline demo on :4173, provider =', provider.name));
