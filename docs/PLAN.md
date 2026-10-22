@@ -46,3 +46,6 @@ Lane 0 = this agent. Workstreams keep the charter lane names; status tracked her
 
 ## LOG
 - 4:45 PM: warmup done (team confirmed, resources reviewed, Zetaris login verified+saved). PLAN ratified. Build opens in 15 min.
+
+## Decision log (Oct 21)
+- Cursor: user declined account creation ("Skip cursor", relayed via parent 6:26 PM). No Cursor account, no phone verification. Sponsor-tech claims limited to Meterless (H-MEM, verified 13/13 conformance) + Zetaris (pending Lane 6). Accept rubric impact; never claim Cursor usage in submission materials.
