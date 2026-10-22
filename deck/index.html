@@ -20,6 +20,11 @@
   .card .t { color:var(--accent); font-weight:600; }
   .num { position:fixed; bottom:26px; right:36px; color:var(--dim); font-size:14px; }
   pre { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 22px; font-size:15px; color:var(--dim); max-width:950px; overflow:auto; }
+
+@media print {
+  .slide { display:flex !important; width:100%; height:100vh; page-break-after:always; position:static; }
+  .num { position:absolute; }
+}
 </style>
 </head>
 <body>
