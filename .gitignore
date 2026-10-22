@@ -7,3 +7,5 @@ __pycache__/
 *.sqlite3-shm
 node_modules/
 data/hmem/
+video/voices/
+video/build/

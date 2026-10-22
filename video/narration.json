@@ -1,0 +1,9 @@
+{
+ "1-hook": "Switch suppliers, says who? Agents answer confidently and cite vaguely. Proofline answers only what it can prove. So, should Meridian Roast switch its oat-milk supplier, and to whom?",
+ "2-answer": "Proofline decomposes the question, queries the company's own data, and returns an evidence-based answer. The top finding: Golden State Oats is the cheapest qualified option at two eighty-seven a unit, while the incumbent distributor lists at three forty-two. Every claim below is verified.",
+ "3-evidence": "Every claim is clickable. This one traces to the suppliers table with the exact rows, the query that produced it, and when it was retrieved. If Proofline cannot trace a claim to evidence, the claim never ships.",
+ "4-memory": "It also remembers. Each session becomes an episode in Meterless H-MEM, and every write lands in the trust ledger. The memory itself is auditable.",
+ "5-arch": "Under the hood: the question decomposes into federated queries against SQLite, CSV files, and a live web extract, each stamped with lineage. Claims are extracted, verified against that evidence, and only then composed into the answer.",
+ "6-sponsors": "Built on the sponsor stack. Meterless H-MEM provides memory and provenance, passing all thirteen conformance checks. NVIDIA Nemotron slots in as the composition model through the provider layer. And the federation layer follows the Zetaris query-in-place pattern.",
+ "7-close": "Proofline. An agent that can explain why. Leitner Labs, Open Agent Hackathon twenty twenty-six."
+}
