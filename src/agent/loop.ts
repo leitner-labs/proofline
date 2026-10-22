@@ -28,7 +28,7 @@ export class ProoflineAgent {
     if (g.onTime) {
       const rows = g.onTime.rows as any[];
       for (const r of rows) out.push(mk(
-        `Supplier ${r.supplier_id} delivered on time for ${r.on_time}/${r.n} purchase orders (last 10 months, internal ledger).`,
+        `${r.supplier_name} delivered on time for ${r.on_time}/${r.n} purchase orders (last 10 months, internal ledger).`,
         [g.onTime], 0.9));
     }
     if (g.quality) {

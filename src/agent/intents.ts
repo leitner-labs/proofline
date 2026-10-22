@@ -16,8 +16,8 @@ export function plan(fed: Federated, intent: Intent) {
     certs: () => fed.csv('certifications.csv'),
     recalls: () => fed.csv('recall_notices.csv'),
     onTime: () => fed.sql('purchase_orders',
-      `SELECT supplier_id, COUNT(*) n, SUM(delivered_on_time) on_time, AVG(unit_price) avg_price
-       FROM purchase_orders GROUP BY supplier_id`),
+      `SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price
+       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id`),
     quality: () => fed.sql('quality_tests',
       `SELECT supplier_id, COUNT(*) n, SUM(passed) passed, AVG(brix) avg_brix
        FROM quality_tests GROUP BY supplier_id`),

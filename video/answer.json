@@ -1,0 +1,304 @@
+{
+  "question": "Should Meridian Roast switch its oat-milk supplier, and to whom, and why?",
+  "claims": [
+    {
+      "claimId": "cl-mvj74e1l-i",
+      "text": "Evidence-based answer (8 verified claims). Top finding: Golden State Oats is the cheapest qualified option at $2.87/unit (MOQ 800L, 4d lead, 6% contract discount); the incumbent Oatly West (distributor) lists at $3.42. All claims below link to their source rows.",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1k-0",
+          "source": "supplier_price_lists.csv",
+          "query": "supplier_price_lists.csv full scan",
+          "rowIds": [
+            "line:2",
+            "line:3",
+            "line:4",
+            "line:5"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.008Z",
+          "lineageId": "lin-mvj74e1k-1"
+        },
+        {
+          "evidenceId": "ev-mvj74e1l-6",
+          "source": "roaster.db:purchase_orders",
+          "query": "SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price\n       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-7"
+        },
+        {
+          "evidenceId": "ev-mvj74e1l-6",
+          "source": "roaster.db:purchase_orders",
+          "query": "SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price\n       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-7"
+        },
+        {
+          "evidenceId": "ev-mvj74e1l-6",
+          "source": "roaster.db:purchase_orders",
+          "query": "SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price\n       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-7"
+        },
+        {
+          "evidenceId": "ev-mvj74e1l-6",
+          "source": "roaster.db:purchase_orders",
+          "query": "SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price\n       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-7"
+        },
+        {
+          "evidenceId": "ev-mvj74e1l-8",
+          "source": "roaster.db:quality_tests",
+          "query": "SELECT supplier_id, COUNT(*) n, SUM(passed) passed, AVG(brix) avg_brix\n       FROM quality_tests GROUP BY supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-9"
+        },
+        {
+          "evidenceId": "ev-mvj74e1l-4",
+          "source": "recall_notices.csv",
+          "query": "recall_notices.csv full scan",
+          "rowIds": [
+            "line:2",
+            "line:3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-5"
+        },
+        {
+          "evidenceId": "ev-mvj74e1k-2",
+          "source": "certifications.csv",
+          "query": "certifications.csv full scan",
+          "rowIds": [
+            "line:2",
+            "line:3",
+            "line:4",
+            "line:5",
+            "line:6",
+            "line:7"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.008Z",
+          "lineageId": "lin-mvj74e1k-3"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-a",
+      "text": "Golden State Oats is the cheapest qualified option at $2.87/unit (MOQ 800L, 4d lead, 6% contract discount); the incumbent Oatly West (distributor) lists at $3.42.",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1k-0",
+          "source": "supplier_price_lists.csv",
+          "query": "supplier_price_lists.csv full scan",
+          "rowIds": [
+            "line:2",
+            "line:3",
+            "line:4",
+            "line:5"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.008Z",
+          "lineageId": "lin-mvj74e1k-1"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-b",
+      "text": "Oatly West (distributor) delivered on time for 9/10 purchase orders (last 10 months, internal ledger).",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1l-6",
+          "source": "roaster.db:purchase_orders",
+          "query": "SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price\n       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-7"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-c",
+      "text": "Pacific Oat Co. delivered on time for 10/10 purchase orders (last 10 months, internal ledger).",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1l-6",
+          "source": "roaster.db:purchase_orders",
+          "query": "SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price\n       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-7"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-d",
+      "text": "Nordic Grain Foods delivered on time for 10/10 purchase orders (last 10 months, internal ledger).",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1l-6",
+          "source": "roaster.db:purchase_orders",
+          "query": "SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price\n       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-7"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-e",
+      "text": "Golden State Oats delivered on time for 10/10 purchase orders (last 10 months, internal ledger).",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1l-6",
+          "source": "roaster.db:purchase_orders",
+          "query": "SELECT s.name AS supplier_name, COUNT(*) n, SUM(p.delivered_on_time) on_time, AVG(p.unit_price) avg_price\n       FROM purchase_orders p JOIN suppliers s ON s.id = p.supplier_id GROUP BY p.supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-7"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-f",
+      "text": "SUP-002 has the strongest incoming-quality record: 10/10 tests passed, avg Brix 10.5.",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1l-8",
+          "source": "roaster.db:quality_tests",
+          "query": "SELECT supplier_id, COUNT(*) n, SUM(passed) passed, AVG(brix) avg_brix\n       FROM quality_tests GROUP BY supplier_id",
+          "rowIds": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-9"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-g",
+      "text": "Nordic Grain Foods had a Class II event on 2026-08-14: Voluntary recall: two lots barista oat milk; potential Bacillus cereus (source: FDA enforcement report).",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1l-4",
+          "source": "recall_notices.csv",
+          "query": "recall_notices.csv full scan",
+          "rowIds": [
+            "line:2",
+            "line:3"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-5"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-h",
+      "text": "Golden State Oats holds USDA Organic + SQF Level 2 (valid to 2027-09-30).",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1k-2",
+          "source": "certifications.csv",
+          "query": "certifications.csv full scan",
+          "rowIds": [
+            "line:2",
+            "line:3",
+            "line:4",
+            "line:5",
+            "line:6",
+            "line:7"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.008Z",
+          "lineageId": "lin-mvj74e1k-3"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "claimId": "cl-mvj74e1l-j",
+      "text": "From memory: a related question was answered before - \"A: Evidence-based answer (8 verified claims). Top finding: Golden State Oats is the cheapest qualified option at $2.87/unit (MOQ 800L, 4d lead, 6% contract discount); the incumbent Oatly West (distributor) lists at $3.42. All claims below link to their source rows.\" (H-MEM episode, relevance 0.34).",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "evidenceId": "ev-mvj74e1l-k",
+          "source": "hmem:episodes",
+          "query": "H-MEM retrieval.query (hybrid ranking, 8 signals); mutation audited in trust ledger",
+          "rowIds": [
+            "mem:relevance-0.34"
+          ],
+          "retrievedAt": "2026-10-22T07:04:42.009Z",
+          "lineageId": "lin-mvj74e1l-l"
+        }
+      ],
+      "verified": true
+    }
+  ],
+  "composedAt": "2026-10-22T07:04:42.009Z"
+}
