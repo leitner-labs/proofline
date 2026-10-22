@@ -19,6 +19,8 @@
   .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 26px; margin:10px 0; max-width:950px; }
   .card .t { color:var(--accent); font-weight:600; }
   .num { position:fixed; bottom:26px; right:36px; color:var(--dim); font-size:14px; }
+  .shots { display:flex; gap:18px; margin-top:26px; }
+  .shots img { width:50%; border:1px solid var(--line); border-radius:12px; display:block; }
   pre { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 22px; font-size:15px; color:var(--dim); max-width:950px; overflow:auto; }
 
 @media print {
@@ -59,6 +61,12 @@
     <li><b>SQLite</b> purchase ledger + quality tests · <b>CSV</b> price lists + certifications · <b>web</b> recall notices</li>
     <li>Answer: 8 verified claims, 14 evidence refs, zero hand-waving</li>
   </ul>
+</section>
+<section class="slide">
+  <div class="kicker">The product</div>
+  <h2>See it work<span class="dot">.</span></h2>
+  <p style="color:var(--dim); font-size:19px; max-width:950px;">Ask in plain language. Every claim arrives with its verdict, confidence and a one-click evidence trail: source, rows, lineage, query, retrieval time.</p>
+  <div class="shots"><img src="assets/ui-answer.png" alt="Proofline answer view: verified claims"><img src="assets/ui-evidence.png" alt="Proofline evidence trail for one claim"></div>
 </section>
 <section class="slide">
   <div class="kicker">Architecture</div>
