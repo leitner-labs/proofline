@@ -21,6 +21,12 @@ export class ProoflineMemory {
       derivedFrom: evidenceIds,
     });
   }
-  recall(query: string) { return this.engine.retrieval.query({ text: query } as any); }
+  recall(query: string): { content: string; relevance: number }[] {
+    // Model-free reference embedder scores low; 0.15 is the practical floor here.
+    const res = this.engine.retrieval.query(query, { topN: 3, threshold: 0.15 });
+    return ((res as any).memories ?? []).map((r: any) => ({
+      content: r.memory?.content ?? '', relevance: r.relevance ?? 0,
+    }));
+  }
   ledgerEntries() { return (this.engine.ledger as any).entries?.() ?? (this.engine.ledger as any).list?.() ?? []; }
 }

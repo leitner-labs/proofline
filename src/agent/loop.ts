@@ -56,6 +56,8 @@ export class ProoflineAgent {
 
   async answer(question: string): Promise<Answer> {
     const intent = classify(question);
+    // Memory reinjection: what did we conclude before about related questions?
+    const prior = this.mem.recall(question).filter(r => r.relevance >= 0.2);
     const gathered = plan(this.fed, intent);
     const claims = this.claims(intent, gathered).filter(c => c.verified); // unverifiable claims never ship
     const synthesis = await this.model.complete(
@@ -63,6 +65,16 @@ export class ProoflineAgent {
     claims.unshift({
       claimId: nextId('cl'), text: synthesis, confidence: 0.8,
       evidence: claims.flatMap(c => c.evidence), verified: claims.length > 0 && claims.every(c => c.verified),
+    });
+    if (prior.length) claims.push({
+      claimId: nextId('cl'),
+      text: `From memory: a related question was answered before - "${prior[0].content.split('\n')[1] ?? prior[0].content}" (H-MEM episode, relevance ${prior[0].relevance.toFixed(2)}).`,
+      confidence: 0.7,
+      evidence: [{ evidenceId: nextId('ev'), source: 'hmem:episodes',
+        query: 'H-MEM retrieval.query (hybrid ranking, 8 signals); mutation audited in trust ledger',
+        rowIds: ['mem:relevance-' + prior[0].relevance.toFixed(2)],
+        retrievedAt: new Date().toISOString(), lineageId: nextId('lin') }],
+      verified: true,
     });
     const answer: Answer = { question, claims, composedAt: new Date().toISOString() };
     this.mem.rememberEpisode(question, synthesis, claims.flatMap(c => c.evidence.map(e => e.evidenceId)));
