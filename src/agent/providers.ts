@@ -8,7 +8,9 @@ export class MockProvider implements ModelProvider {
   name = 'mock-deterministic';
   async complete(prompt: string): Promise<string> {
     if (prompt.startsWith('SYNTHESIZE:')) {
-      return 'Recommendation: switch to Golden State Oats; keep Oatly West as secondary until two clean quality cycles complete.';
+      const lines = prompt.split('\n').filter(l => l.startsWith('- ')).map(l => l.slice(2));
+      const top = lines[0] ?? 'no findings';
+      return `Evidence-based answer (${lines.length} verified claim${lines.length === 1 ? '' : 's'}). Top finding: ${top} All claims below link to their source rows.`;
     }
     return 'ok';
   }
