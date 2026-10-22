@@ -1,0 +1,16 @@
+{
+  "name": "proofline",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "description": "Proofline - an agent that answers high-stakes questions with a verifiable evidence trail. Open Agent Hackathon 2026, Track 02.",
+  "scripts": {
+    "demo": "tsx src/cli.ts",
+    "test": "tsx --test test/*.test.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
