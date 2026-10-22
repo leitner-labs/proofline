@@ -69,7 +69,7 @@ Tests (agent loop, evidence trail, memory): `node_modules/.bin/tsx --test test/*
 
 - **Meterless:** H-MEM is load-bearing (memory + provenance + audit), conformance-verified in-repo.
 - **NVIDIA Nemotron:** target model provider for composition and judging (OpenAI-compatible endpoint).
-- **Zetaris:** the federation + lineage layer implements the Zetaris pattern (query-in-place, lineage-stamped results) and is interface-compatible with a Zetaris Lightning/JDBC endpoint; this submission runs it against local sources because hosted Zetaris compute was not available to a builder without an AWS account or a Docker-capable machine. See `docs/PLAN.md` decision log.
+- **Zetaris:** the federation + lineage layer implements the Zetaris pattern (query-in-place, lineage-stamped results). `zetaris/` contains the runnable integration for a real install - Lightning SQL source registrations, a `supplier_risk` USL model, and the demo's exact federation queries - mirroring `src/tools/federated.ts` one-for-one; the submitted demo runs the same interface against local SQLite/CSV because the build sandbox has no Docker or AWS (see `zetaris/README.md` and `docs/PLAN.md`).
 
 ## What we'd do next
 
