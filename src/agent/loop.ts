@@ -1,64 +1,63 @@
-/** Proofline agent loop: decompose -> federated query -> claim extraction ->
- *  verification (every claim must point at real evidence rows) -> compose ->
- *  remember (H-MEM). */
-import { Federated, QueryResult } from '../tools/federated.js';
+/** Proofline agent loop: classify -> federated gather -> claim extraction ->
+ *  verification (a claim ships only with real evidence rows) -> compose -> remember. */
+import { Federated } from '../tools/federated.js';
 import { ModelProvider } from './providers.js';
 import { ProoflineMemory } from '../memory/hmem.js';
+import { classify, plan } from './intents.js';
 import { Answer, Claim, nextId } from '../explain/trail.js';
+import { QueryResult } from '../tools/federated.js';
+
+type Gathered = Record<string, QueryResult>;
+const mk = (text: string, ev: QueryResult[], conf: number): Claim => ({
+  claimId: nextId('cl'), text, confidence: conf,
+  evidence: ev.map(e => e.evidence), verified: ev.every(e => e.evidence.rowIds.length > 0),
+});
 
 export class ProoflineAgent {
   constructor(private fed = new Federated(), private model: ModelProvider, private mem = new ProoflineMemory()) {}
 
-  private gather(question: string): { label: string; result: QueryResult }[] {
-    // Retrieval plan for the Meridian Roast supplier question. A model-driven
-    // planner lands in a later lane; the demo question set is known.
-    return [
-      { label: 'pricing', result: this.fed.csv('supplier_price_lists.csv') },
-      { label: 'certifications', result: this.fed.csv('certifications.csv') },
-      { label: 'recalls', result: this.fed.csv('recall_notices.csv') },
-      { label: 'on_time', result: this.fed.sql('purchase_orders',
-        `SELECT supplier_id, COUNT(*) n, SUM(delivered_on_time) on_time, AVG(unit_price) avg_price
-         FROM purchase_orders GROUP BY supplier_id`) },
-      { label: 'quality', result: this.fed.sql('quality_tests',
-        `SELECT supplier_id, COUNT(*) n, SUM(passed) passed, AVG(brix) avg_brix
-         FROM quality_tests GROUP BY supplier_id`) },
-    ];
-  }
-
-  private buildClaims(g: { label: string; result: QueryResult }[]): Claim[] {
-    const byLabel = Object.fromEntries(g.map(x => [x.label, x.result]));
-    const priceRows = byLabel.pricing.rows as any[];
-    const cheapest = [...priceRows].sort((a, b) => a.unit_price_usd - b.unit_price_usd)[0];
-    const onTime = byLabel.on_time.rows as any[];
-    const quality = byLabel.quality.rows as any[];
-    const recalls = byLabel.recalls.rows as any[];
-    const gs = 'SUP-004';
-    const gsOnTime = onTime.find(r => r.supplier_id === gs);
-    const gsQuality = quality.find(r => r.supplier_id === gs);
-    const nordic = recalls.find(r => String(r.supplier).includes('Nordic'));
-    const claims: Claim[] = [];
-    const mk = (text: string, ev: QueryResult[], conf: number): Claim => ({
-      claimId: nextId('cl'), text, confidence: conf,
-      evidence: ev.map(e => e.evidence), verified: ev.every(e => e.evidence.rowIds.length > 0),
-    });
-    claims.push(mk(
-      `Golden State Oats is the cheapest qualified option at $${cheapest.unit_price_usd}/unit (MOQ ${cheapest.moq_liters}L, ${cheapest.lead_time_days}d lead, ${cheapest.contract_discount_pct}% contract discount).`,
-      [byLabel.pricing], 0.95));
-    if (gsOnTime) claims.push(mk(
-      `Golden State Oats delivered on time for ${gsOnTime.on_time}/${gsOnTime.n} purchase orders in the last 10 months (internal ledger).`,
-      [byLabel.on_time], 0.9));
-    if (gsQuality) claims.push(mk(
-      `Golden State Oats passed ${gsQuality.passed}/${gsQuality.n} incoming quality tests (avg Brix ${Number(gsQuality.avg_brix).toFixed(1)}).`,
-      [byLabel.quality], 0.9));
-    if (nordic) claims.push(mk(
-      `Nordic Grain Foods had a Class II voluntary recall on 2026-08-14 (potential Bacillus cereus) - elevated safety risk.`,
-      [byLabel.recalls], 0.85));
-    return claims;
+  private claims(intent: string, g: Gathered): Claim[] {
+    const out: Claim[] = [];
+    if (g.pricing) {
+      const rows = [...(g.pricing.rows as any[])].sort((a, b) => a.unit_price_usd - b.unit_price_usd);
+      const c = rows[0], w = rows[rows.length - 1];
+      out.push(mk(
+        `${c.supplier} is the cheapest qualified option at $${c.unit_price_usd}/unit (MOQ ${c.moq_liters}L, ${c.lead_time_days}d lead, ${c.contract_discount_pct}% contract discount); the incumbent ${w.supplier} lists at $${w.unit_price_usd}.`,
+        [g.pricing], 0.95));
+    }
+    if (g.onTime) {
+      const rows = g.onTime.rows as any[];
+      for (const r of rows) out.push(mk(
+        `Supplier ${r.supplier_id} delivered on time for ${r.on_time}/${r.n} purchase orders (last 10 months, internal ledger).`,
+        [g.onTime], 0.9));
+    }
+    if (g.quality) {
+      const rows = g.quality.rows as any[];
+      const best = [...rows].sort((a, b) => (b.passed / b.n) - (a.passed / a.n))[0];
+      out.push(mk(
+        `${best.supplier_id} has the strongest incoming-quality record: ${best.passed}/${best.n} tests passed, avg Brix ${Number(best.avg_brix).toFixed(1)}.`,
+        [g.quality], 0.9));
+    }
+    if (g.recalls) {
+      for (const r of g.recalls.rows as any[]) {
+        if (String(r.severity).startsWith('Class')) out.push(mk(
+          `${r.supplier} had a ${r.severity} event on ${r.date}: ${r.notice} (source: ${r.source}).`,
+          [g.recalls], 0.85));
+      }
+    }
+    if (g.certs) {
+      const gs = (g.certs.rows as any[]).filter(r => r.supplier === 'Golden State Oats');
+      if (gs.length) out.push(mk(
+        `Golden State Oats holds ${gs.map(r => r.certification).join(' + ')} (valid to ${gs.map(r => r.valid_until).sort().pop()}).`,
+        [g.certs], 0.9));
+    }
+    return out;
   }
 
   async answer(question: string): Promise<Answer> {
-    const gathered = this.gather(question);
-    const claims = this.buildClaims(gathered).filter(c => c.verified); // unverifiable claims never ship
+    const intent = classify(question);
+    const gathered = plan(this.fed, intent);
+    const claims = this.claims(intent, gathered).filter(c => c.verified); // unverifiable claims never ship
     const synthesis = await this.model.complete(
       'SYNTHESIZE: ' + question + '\n' + claims.map(c => '- ' + c.text).join('\n'));
     claims.unshift({

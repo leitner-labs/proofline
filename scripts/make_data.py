@@ -61,7 +61,7 @@ with open(os.path.join(BASE,'certifications.csv'),'w',newline='') as f:
 with open(os.path.join(BASE,'recall_notices.csv'),'w',newline='') as f:
     w = csv.writer(f); w.writerow(['source','date','supplier','notice','severity','url'])
     w.writerows([
-        ['FDA enforcement report','2026-08-14','Nordic Grain Foods','Voluntary recall: two lots barista oat milk, potential Bacillus cereus','Class II','https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts'],
+        ['FDA enforcement report','2026-08-14','Nordic Grain Foods',"Voluntary recall: two lots barista oat milk; potential Bacillus cereus",'Class II','https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts'],
         ['CA DPH notice','2026-05-02','Oatly West (distributor)','Distribution delay advisory (logistics, non-safety)','Informational','https://www.cdph.ca.gov'],
     ])
 con.close()

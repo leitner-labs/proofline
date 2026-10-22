@@ -10,11 +10,23 @@ const DATA = path.join(import.meta.dirname, '..', '..', 'data');
 
 export interface QueryResult { rows: Record<string, unknown>[]; evidence: EvidenceRef; }
 
+function parseCsvLine(line: string): string[] {
+  const out: string[] = []; let cur = '', q = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (q && ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+    else if (ch === '"') q = !q;
+    else if (ch === ',' && !q) { out.push(cur); cur = ''; }
+    else cur += ch;
+  }
+  out.push(cur);
+  return out;
+}
 function csvRows(file: string): Record<string, string>[] {
   const text = readFileSync(path.join(DATA, file), 'utf8').trim();
   const [head, ...lines] = text.split('\n');
-  const cols = head.split(',');
-  return lines.map(l => Object.fromEntries(l.split(',').map((v, i) => [cols[i], v])));
+  const cols = parseCsvLine(head);
+  return lines.map(l => Object.fromEntries(parseCsvLine(l).map((v, i) => [cols[i], v])));
 }
 
 export class Federated {
