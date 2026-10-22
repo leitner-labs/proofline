@@ -36,6 +36,11 @@ Answering that honestly means looking everywhere at once: the roaster's internal
 - **Federation + lineage:** the query layer is built to the Zetaris pattern — sources are queried in place (no ETL), and every executed query is stamped with a lineage id that flows into the answer's citations. In this build the layer runs against local SQLite/CSV (see *Sponsor technology* below).
 - **Model:** the agent loop is provider-agnostic (NVIDIA Nemotron via an OpenAI-compatible endpoint; a deterministic provider keeps tests reproducible).
 
+## Demo video and deck
+
+- **Video (1:35):** `video/proofline-demo.mp4` — every on-screen number comes from a real agent run baked in `video/answer.json`; the whole pipeline (scenes, narration, assembly) is reproducible via `video/make-scenes.py`, `video/make-narration.py` and `video/make-video.py`.
+- **Deck:** `deck/index.html` — 8 slides, open in any browser.
+
 ## Run it
 
 ```bash
@@ -45,6 +50,8 @@ node_modules/.bin/tsx src/server.ts   # web UI on :4173
 ```
 
 Regenerate the dataset any time: `python3 scripts/make_data.py`
+
+Tests (agent loop, evidence trail, memory): `node_modules/.bin/tsx --test test/*.test.ts`
 
 ## Repo map
 
