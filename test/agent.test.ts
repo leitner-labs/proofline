@@ -10,6 +10,18 @@ test('classify routes question shapes', () => {
   assert.equal(classify('any recalls on our suppliers?'), 'recalls');
   assert.equal(classify('what is the cheapest price per unit?'), 'pricing');
   assert.equal(classify('should we switch suppliers?'), 'supplier-decision');
+  assert.equal(classify('Which supplier has the best on-time record?'), 'on-time');
+  assert.equal(classify('What would switching save per year?'), 'savings');
+  assert.equal(classify('Is there recall risk on our current oat milk?'), 'recalls');
+});
+test('on-time question leads with the best record', async () => {
+  const a = await agent.answer('Which supplier has the best on-time record?');
+  const first = a.claims.find(c => !c.text.startsWith('Evidence-based'));
+  assert.ok(first && /Pacific Oat Co\. delivered on time for 10\/10/.test(first.text), first?.text);
+});
+test('savings question answers in dollars per year', async () => {
+  const a = await agent.answer('What would switching save per year?');
+  assert.ok(a.claims.some(c => /saves about \$[\d,]+\/year/.test(c.text)), 'no savings claim');
 });
 test('supplier decision: all claims verified, evidence-backed', async () => {
   const a = await agent.answer('Should Meridian Roast switch its oat-milk supplier?');

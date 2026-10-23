@@ -18,6 +18,16 @@ export class ProoflineAgent {
 
   private claims(intent: string, g: Gathered): Claim[] {
     const out: Claim[] = [];
+    if (g.volume && g.pricing) {
+      const rows = [...(g.pricing.rows as any[])].sort((a, b) => a.unit_price_usd - b.unit_price_usd);
+      const cheap = rows[0], inc = rows[rows.length - 1];
+      const v = g.volume.rows[0] as any;
+      const annualL = (Number(v.total_liters) / 10) * 12; // ledger covers 10 months
+      const save = (inc.unit_price_usd - cheap.unit_price_usd) * annualL * (1 - cheap.contract_discount_pct / 100);
+      out.push(mk(
+        `At the ledger's recent volume (~${Math.round(annualL).toLocaleString('en-US')} L/yr), switching from ${inc.supplier} ($${inc.unit_price_usd}/unit) to ${cheap.supplier} ($${cheap.unit_price_usd}/unit less ${cheap.contract_discount_pct}% contract discount) saves about $${Math.round(save).toLocaleString('en-US')}/year.`,
+        [g.pricing, g.volume], 0.85));
+    }
     if (g.pricing) {
       const rows = [...(g.pricing.rows as any[])].sort((a, b) => a.unit_price_usd - b.unit_price_usd);
       const c = rows[0], w = rows[rows.length - 1];
@@ -26,7 +36,7 @@ export class ProoflineAgent {
         [g.pricing], 0.95));
     }
     if (g.onTime) {
-      const rows = g.onTime.rows as any[];
+      const rows = [...(g.onTime.rows as any[])].sort((a, b) => (b.on_time / b.n) - (a.on_time / a.n));
       for (const r of rows) out.push(mk(
         `${r.supplier_name} delivered on time for ${r.on_time}/${r.n} purchase orders (last 10 months, internal ledger).`,
         [g.onTime], 0.9));
